@@ -2000,6 +2000,10 @@ LOG_SUPER_DEBUG("Initialised heat");
                                 dstarlya_cont_dt_box[box_ct] += (double)del_fcoll_Rct[box_ct]*dstarlya_cont_dt_prefactor[R_ct];
                                 dstarlya_inj_dt_box[box_ct] += (double)del_fcoll_Rct[box_ct]*dstarlya_inj_dt_prefactor[R_ct];
                             }
+                            if(box_ct==0){
+                                LOG_SUPER_DEBUG("Cell0 R=%.1f || xh %.2e | xi %.2e | xl %.2e | sl %.2e | ct %.2e | ij %.2e",R_values[R_ct],dxheat_dt_box[box_ct],
+                                                dxion_source_dt_box[R_ct],dstarlya_dt_box[box_ct],dstarlya_cont_dt_box[box_ct],dstarlya_inj_dt_box[box_ct]);
+                            }
 
                             if (flag_options->USE_MINI_HALOS){
                                 dstarlyLW_dt_box[box_ct] += (double)del_fcoll_Rct[box_ct]*dstarlyLW_dt_prefactor[R_ct];
@@ -2250,6 +2254,10 @@ LOG_SUPER_DEBUG("Initialised heat");
                                     Xheat_ave_MINI += ( dxheat_dzp_MINI );
                                     J_LW_ave += dstarlyLW_dt_box[box_ct];
                                     J_LW_ave_MINI += dstarlyLW_dt_box_MINI[box_ct];
+                                }
+                                if(box_ct==0){
+                                    LOG_SUPER_DEBUG("Cell0 || xh %.2e | xi %.2e | ja %.2e | xa %.2e || Ts %.2e | Tk %.2e",dxheat_dzp,
+                                                    dt_dzp*dxion_source_dt_box[box_ct],J_alpha_tot,xa_tilde_fast,TS_fast,T);
                                 }
                             }
 
