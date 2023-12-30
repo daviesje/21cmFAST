@@ -2256,8 +2256,15 @@ LOG_SUPER_DEBUG("Initialised heat");
                                     J_LW_ave_MINI += dstarlyLW_dt_box_MINI[box_ct];
                                 }
                                 if(box_ct==0){
-                                    LOG_SUPER_DEBUG("Cell0 || xh %.2e | xi %.2e | ja %.2e | xa %.2e || Ts %.2e | Tk %.2e",dxheat_dzp,
-                                                    dt_dzp*dxion_source_dt_box[box_ct],J_alpha_tot,xa_tilde_fast,TS_fast,T);
+                                    LOG_SUPER_DEBUG("Cell0: delta: %.3e | xheat: %.3e | dxion: %.3e | dxlya: %.3e | dstarlya: %.3e",curr_delNL0*growth_factor_zp
+                                         ,dxheat_dt_box[box_ct],dxion_source_dt_box[box_ct],dxlya_dt_box[box_ct],dstarlya_dt_box[box_ct]);
+                                    if(flag_options->USE_LYA_HEATING){
+                                        LOG_SUPER_DEBUG("Lya inj %.3e | Lya cont %.3e",dstarlya_cont_dt_box[box_ct],dstarlya_inj_dt_box[box_ct]);
+                                    }
+                                    LOG_SUPER_DEBUG("Ts %.3e Tk %.3e x_e %.3e J_21_LW %.3e",TS_fast,T,x_e,this_spin_temp->J_21_LW_box[box_ct]);
+                    
+                                    // LOG_SUPER_DEBUG("Cell0 || xh %.2e | xi %.2e | ja %.2e | xa %.2e || Ts %.2e | Tk %.2e",dxheat_dzp,
+                                    //                 dt_dzp*dxion_source_dt_box[box_ct],J_alpha_tot,xa_tilde_fast,TS_fast,T);
                                 }
                             }
 
