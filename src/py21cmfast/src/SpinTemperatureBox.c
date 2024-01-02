@@ -1552,7 +1552,6 @@ LOG_SUPER_DEBUG("Initialised heat");
         // Extra pre-factors etc. are defined here, as they are independent of the density field,
         // and only have to be computed once per z' or R_ct, rather than each box_ct
         for (R_ct=0; R_ct<global_params.NUM_FILTER_STEPS_FOR_Ts; R_ct++){
-
             zpp_integrand = ( pow(1+zp,2)*(1+zpp_for_evolve_list[R_ct]) )/( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX)) );
             dstarlya_dt_prefactor[R_ct]  = zpp_integrand * sum_lyn[R_ct];
             //Lya flux prefactors for Lya heating
@@ -1570,6 +1569,11 @@ LOG_SUPER_DEBUG("Initialised heat");
                     dstarlya_inj_dt_prefactor_MINI[R_ct]  = zpp_integrand * sum_lynto2_MINI[R_ct];
                 }
             }
+            LOG_SUPER_DEBUG("z: %.2e R: %.2e int %.2e starlya: %.4e",zpp,R_values[R_ct],
+                        zpp_integrand*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX)) ),
+                        dstarlya_dt_prefactor[R_ct]*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX)) ));
+            LOG_SUPER_DEBUG("cont %.2e inj %.2e",dstarlya_cont_dt_prefactor[R_ct]*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX)) ),
+                        dstarlya_inj_dt_prefactor[R_ct]*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX)) ));
         }
 
         // Required quantities for calculating the IGM spin temperature
@@ -2007,7 +2011,7 @@ LOG_SUPER_DEBUG("Initialised heat");
                                 // else{
                                 //     dzpp_for_evolve = zpp_edge[R_ct-1] - zpp_edge[R_ct];
                                 // }
-                                LOG_SUPER_DEBUG("Cell0 R=%.1f || xh %.2e | xi %.2e | xl %.2e | sl %.2e | ct %.2e | ij %.2e",R_values[R_ct],dxheat_dt_box[box_ct],
+                                LOG_SUPER_DEBUG("Cell0 R=%.1f (%.4f) || xh %.2e | xi %.2e | xl %.2e | sl %.2e | ct %.2e | ij %.2e",R_values[R_ct],zpp_for_evolve_list[R_ct],dxheat_dt_box[box_ct],
                                                 dxion_source_dt_box[R_ct],dxlya_dt_box[box_ct],dstarlya_dt_box[box_ct],dstarlya_cont_dt_box[box_ct],dstarlya_inj_dt_box[box_ct]);
                                 LOG_SUPER_DEBUG("sl fac %.4e cont %.4e inj %.4e SFR %.4e (%.4e)",dstarlya_dt_prefactor[R_ct]/dfcoll_dz_val*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX))),
                                                 dstarlya_cont_dt_prefactor[R_ct]/dfcoll_dz_val*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX))),
@@ -2270,7 +2274,7 @@ LOG_SUPER_DEBUG("Initialised heat");
                                     LOG_SUPER_DEBUG("Cell0: delta: %.3e | xheat: %.3e | dxion: %.3e | dxlya: %.3e | dstarlya: %.3e",curr_delNL0*growth_factor_zp
                                          ,dxheat_dt_box[box_ct],dxion_source_dt_box[box_ct],dxlya_dt_box[box_ct],dstarlya_dt_box[box_ct]);
                                     if(flag_options->USE_LYA_HEATING){
-                                        LOG_SUPER_DEBUG("Lya inj %.3e | Lya cont %.3e",dstarlya_cont_dt_box[box_ct],dstarlya_inj_dt_box[box_ct]);
+                                        LOG_SUPER_DEBUG("Lya inj %.3e | Lya cont %.3e",dstarlya_inj_dt_box[box_ct],dstarlya_cont_dt_box[box_ct]);
                                     }
                                     LOG_SUPER_DEBUG("Ts %.3e Tk %.3e x_e %.3e J_21_LW %.3e",TS_fast,T,x_e,this_spin_temp->J_21_LW_box[box_ct]);
                     
