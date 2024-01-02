@@ -2001,12 +2001,19 @@ LOG_SUPER_DEBUG("Initialised heat");
                                 dstarlya_inj_dt_box[box_ct] += (double)del_fcoll_Rct[box_ct]*dstarlya_inj_dt_prefactor[R_ct];
                             }
                             if(box_ct==0){
+                                // if (R_ct==0){
+                                //     dzpp_for_evolve = zp - zpp_edge[0];
+                                // }
+                                // else{
+                                //     dzpp_for_evolve = zpp_edge[R_ct-1] - zpp_edge[R_ct];
+                                // }
                                 LOG_SUPER_DEBUG("Cell0 R=%.1f || xh %.2e | xi %.2e | xl %.2e | sl %.2e | ct %.2e | ij %.2e",R_values[R_ct],dxheat_dt_box[box_ct],
                                                 dxion_source_dt_box[R_ct],dxlya_dt_box[box_ct],dstarlya_dt_box[box_ct],dstarlya_cont_dt_box[box_ct],dstarlya_inj_dt_box[box_ct]);
-                                LOG_SUPER_DEBUG("sl fac %.4e cont %.4e inj %.4e SFR %.4e",dstarlya_dt_prefactor[R_ct]/dfcoll_dz_val,
-                                                dstarlya_cont_dt_prefactor[R_ct]/dfcoll_dz_val,
-                                                dstarlya_inj_dt_prefactor[R_ct]/dfcoll_dz_val,
-                                                dfcoll_dz_val*(double)del_fcoll_Rct[box_ct]);
+                                LOG_SUPER_DEBUG("sl fac %.4e cont %.4e inj %.4e SFR %.4e (%.4e)",dstarlya_dt_prefactor[R_ct]/dfcoll_dz_val*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX))),
+                                                dstarlya_cont_dt_prefactor[R_ct]/dfcoll_dz_val*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX))),
+                                                dstarlya_inj_dt_prefactor[R_ct]/dfcoll_dz_val*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX))),
+                                                dfcoll_dz_val*(double)del_fcoll_Rct[box_ct]/( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX))),
+                                                del_fcoll_Rct[box_ct]);
                             }
 
                             if (flag_options->USE_MINI_HALOS){
