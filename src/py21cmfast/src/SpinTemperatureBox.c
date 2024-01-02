@@ -2192,6 +2192,10 @@ LOG_SUPER_DEBUG("Initialised heat");
                                 } else {
                                     T += ( dxheat_dzp + dcomp_dzp + dspec_dzp + dadia_dzp + dCMBheat_dzp + eps_Lya_cont + eps_Lya_inj) * dzp;
                                 }
+                                if(box_ct==0){
+                                    LOG_SUPER_DEBUG("Heating Terms: X %.4e | c %.4e | S %.4e | A %.4e | c %.4e | lc %.4e | li %.4e | dz %.4e",
+                                                dxheat_dzp, dcomp_dzp, dspec_dzp, dadia_dzp, dCMBheat_dzp, eps_Lya_cont, eps_Lya_inj, dzp);
+                                }
 
                             }
 
