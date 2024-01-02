@@ -2009,7 +2009,8 @@ LOG_SUPER_DEBUG("Initialised heat");
                                 //     dzpp_for_evolve = zp - zpp_edge[0];
                                 // else
                                 //     dzpp_for_evolve = zpp_edge[R_ct-1] - zpp_edge[R_ct];
-                                LOG_SUPER_DEBUG("Cell0 R=%.1f (%.3f) | d %.4e || SFR (%.4e,%.4e) |",R_values[R_ct],zpp_for_evolve_list[R_ct],curr_dens,del_fcoll_Rct[box_ct],dfcoll_dz_val*del_fcoll_Rct[box_ct]);
+                                LOG_SUPER_DEBUG("Cell0 R=%.1f (%.3f) | d %.4e || SFR (%.4e,%.4e) |",R_values[R_ct],zpp_for_evolve_list[R_ct],delNL0[R_ct][box_ct],del_fcoll_Rct[box_ct],
+                                                    dfcoll_dz_val*del_fcoll_Rct[box_ct]/pow(1+zpp_for_evolve_list[R_ct], -astro_params->X_RAY_SPEC_INDEX));
                                 LOG_SUPER_DEBUG("xh %.2e | xi %.2e | xl %.2e | sl %.2e | ct %.2e | ij %.2e",dxheat_dt_box[box_ct],
                                                 dxion_source_dt_box[box_ct],dxlya_dt_box[box_ct],dstarlya_dt_box[box_ct],dstarlya_cont_dt_box[box_ct],dstarlya_inj_dt_box[box_ct]);
                             }
