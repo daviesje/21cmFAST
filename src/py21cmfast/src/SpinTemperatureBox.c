@@ -2187,16 +2187,16 @@ LOG_SUPER_DEBUG("Initialised heat");
 
                             //Add CMB and Lya heating rates, and evolve
                             if (T < MAX_TK) {
+                                if(box_ct==0){
+                                    LOG_SUPER_DEBUG("Heating Terms:vT %.4e | X %.4e | c %.4e | S %.4e | A %.4e | c %.4e | lc %.4e | li %.4e | dz %.4e",
+                                                T, dxheat_dzp, dcomp_dzp, dspec_dzp, dadia_dzp, dCMBheat_dzp, eps_Lya_cont, eps_Lya_inj, dzp);
+                                }
                                 if (flag_options->USE_MINI_HALOS){
                                     T += ( dxheat_dzp + dxheat_dzp_MINI + dcomp_dzp + dspec_dzp + dadia_dzp + dCMBheat_dzp + eps_Lya_cont + eps_Lya_inj + eps_Lya_cont_MINI + eps_Lya_inj_MINI) * dzp;
                                 } else {
                                     T += ( dxheat_dzp + dcomp_dzp + dspec_dzp + dadia_dzp + dCMBheat_dzp + eps_Lya_cont + eps_Lya_inj) * dzp;
                                 }
-                                if(box_ct==0){
-                                    LOG_SUPER_DEBUG("Heating Terms: X %.4e | c %.4e | S %.4e | A %.4e | c %.4e | lc %.4e | li %.4e | dz %.4e",
-                                                dxheat_dzp, dcomp_dzp, dspec_dzp, dadia_dzp, dCMBheat_dzp, eps_Lya_cont, eps_Lya_inj, dzp);
-                                }
-
+                                if(box_ct==0) LOG_SUPER_DEBUG("--> T %.4e",T);
                             }
 
                             if (T<0){ // spurious bahaviour of the trapazoidalintegrator. generally overcooling in underdensities
