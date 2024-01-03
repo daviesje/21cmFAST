@@ -2005,13 +2005,9 @@ LOG_SUPER_DEBUG("Initialised heat");
                                 dstarlya_inj_dt_box[box_ct] += (double)del_fcoll_Rct[box_ct]*dstarlya_inj_dt_prefactor[R_ct];
                             }
                             if(box_ct==0){
-                                // if (R_ct==0)
-                                //     dzpp_for_evolve = zp - zpp_edge[0];
-                                // else
-                                //     dzpp_for_evolve = zpp_edge[R_ct-1] - zpp_edge[R_ct];
-                                LOG_SUPER_DEBUG("Cell0 R=%.1f (%.3f) | d %.4e || SFR (%.4e,%.4e) |",R_values[R_ct],zpp_for_evolve_list[R_ct],delNL0[R_ct][box_ct],del_fcoll_Rct[box_ct],
-                                                    dfcoll_dz_val*del_fcoll_Rct[box_ct]/pow(1+zpp_for_evolve_list[R_ct], -astro_params->X_RAY_SPEC_INDEX));
-                                LOG_SUPER_DEBUG("xh %.2e | xi %.2e | xl %.2e | sl %.2e | ct %.2e | ij %.2e",dxheat_dt_box[box_ct],
+                                LOG_SUPER_DEBUG("Cell0 R=%.1f (%.2f) | d %.4e | SFR (%.4e,%.4e) |",R_values[R_ct],zpp_for_evolve_list[R_ct],delNL0[R_ct][box_ct],del_fcoll_Rct[box_ct],
+                                                    dfcoll_dz_val*del_fcoll_Rct[box_ct]*astro_params->F_STAR10/pow(1+zpp_for_evolve_list[R_ct], -astro_params->X_RAY_SPEC_INDEX));
+                                LOG_SUPER_DEBUG("xh %.3e | xi %.3e | xl %.3e | sl %.3e | ct %.3e | ij %.3e",dxheat_dt_box[box_ct],
                                                 dxion_source_dt_box[box_ct],dxlya_dt_box[box_ct],dstarlya_dt_box[box_ct],dstarlya_cont_dt_box[box_ct],dstarlya_inj_dt_box[box_ct]);
                             }
 
@@ -2183,7 +2179,7 @@ LOG_SUPER_DEBUG("Initialised heat");
                             //Add CMB and Lya heating rates, and evolve
                             if (T < MAX_TK) {
                                 if(box_ct==0){
-                                    LOG_SUPER_DEBUG("Heating Terms:vT %.4e | X %.4e | c %.4e | S %.4e | A %.4e | c %.4e | lc %.4e | li %.4e | dz %.4e",
+                                    LOG_SUPER_DEBUG("Heating Terms: T %.4e | X %.4e | c %.4e | S %.4e | A %.4e | c %.4e | lc %.4e | li %.4e | dz %.4e",
                                                 T, dxheat_dzp, dcomp_dzp, dspec_dzp, dadia_dzp, dCMBheat_dzp, eps_Lya_cont, eps_Lya_inj, dzp);
                                 }
                                 if (flag_options->USE_MINI_HALOS){
@@ -2273,12 +2269,9 @@ LOG_SUPER_DEBUG("Initialised heat");
                                     LOG_SUPER_DEBUG("Cell0: delta: %.3e | xheat: %.3e | dxion: %.3e | dxlya: %.3e | dstarlya: %.3e",curr_delNL0*growth_factor_zp
                                          ,dxheat_dt_box[box_ct],dxion_source_dt_box[box_ct],dxlya_dt_box[box_ct],dstarlya_dt_box[box_ct]);
                                     if(flag_options->USE_LYA_HEATING){
-                                        LOG_SUPER_DEBUG("Lya inj %.3e | Lya cont %.3e",dstarlya_inj_dt_box[box_ct],dstarlya_cont_dt_box[box_ct]);
+                                        LOG_SUPER_DEBUG("Lya inj %.4e | Lya cont %.4e",dstarlya_inj_dt_box[box_ct],dstarlya_cont_dt_box[box_ct]);
                                     }
-                                    LOG_SUPER_DEBUG("Ts %.3e Tk %.3e x_e %.3e J_21_LW %.3e",TS_fast,T,x_e,this_spin_temp->J_21_LW_box[box_ct]);
-                    
-                                    // LOG_SUPER_DEBUG("Cell0 || xh %.2e | xi %.2e | ja %.2e | xa %.2e || Ts %.2e | Tk %.2e",dxheat_dzp,
-                                    //                 dt_dzp*dxion_source_dt_box[box_ct],J_alpha_tot,xa_tilde_fast,TS_fast,T);
+                                    LOG_SUPER_DEBUG("Ts %.5e Tk %.5e x_e %.5e J_21_LW %.5e",TS_fast,T,x_e,this_spin_temp->J_21_LW_box[box_ct]);
                                 }
                             }
 
