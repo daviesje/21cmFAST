@@ -1569,7 +1569,7 @@ LOG_SUPER_DEBUG("Initialised heat");
                     dstarlya_inj_dt_prefactor_MINI[R_ct]  = zpp_integrand * sum_lynto2_MINI[R_ct];
                 }
             }
-            LOG_SUPER_DEBUG("z: %.2e R: %.2e int %.2e starlya: %.4e",zpp,R_values[R_ct],
+            LOG_SUPER_DEBUG("z: %.2e R: %.2e int %.2e starlya: %.4e",zpp_for_evolve_list[R_ct],R_values[R_ct],
                         zpp_integrand*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX)) ),
                         dstarlya_dt_prefactor[R_ct]*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX)) ));
             LOG_SUPER_DEBUG("cont %.2e inj %.2e",dstarlya_cont_dt_prefactor[R_ct]*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX)) ),
@@ -1615,6 +1615,11 @@ LOG_SUPER_DEBUG("Initialised heat");
 
             }
         }
+        LOG_SUPER_DEBUG("%d of %d heat: %.3e %.3e %.3e ion: %.3e %.3e %.3e lya: %.3e %.3e %.3e lower %.3e"
+                ,R_ct,global_params.NUM_FILTER_STEPS_FOR_Ts
+                ,freq_int_heat_tbl[0][R_ct],freq_int_heat_tbl[x_int_NXHII/2][R_ct],freq_int_heat_tbl[x_int_NXHII-1][R_ct]
+                ,freq_int_ion_tbl[0][R_ct],freq_int_ion_tbl[x_int_NXHII/2][R_ct],freq_int_ion_tbl[x_int_NXHII-1][R_ct]
+                ,freq_int_lya_tbl[0][R_ct],freq_int_lya_tbl[x_int_NXHII/2][R_ct],freq_int_lya_tbl[x_int_NXHII-1][R_ct], lower_int_limit);
 
         LOG_SUPER_DEBUG("looping over box...");
 
