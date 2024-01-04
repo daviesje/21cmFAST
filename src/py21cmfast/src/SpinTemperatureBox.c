@@ -2254,6 +2254,9 @@ LOG_SUPER_DEBUG("Initialised heat");
                                 //Take the absolute value, the optical depth can deal with very large numbers, so ok to be small
                                 TS_fast = fabs(TS_fast);
                             }
+                            
+                            if(box_ct==0)
+                                LOG_SUPER_DEBUG("Spin terms xc %.5e xa %.5e xC %.5e Ti %.5e T2 %.5e --> T %.4e",xc_fast,xa_tilde_fast_arg,xCMB,T_inv,T_inv_sq,TS_fast);
 
                             this_spin_temp->Ts_box[box_ct] = TS_fast;
 
