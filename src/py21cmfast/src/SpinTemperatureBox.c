@@ -2012,8 +2012,13 @@ LOG_SUPER_DEBUG("Initialised heat");
                             if(box_ct==0){
                                 LOG_SUPER_DEBUG("Cell0 R=%.1f (%.2f) | d %.4e | SFR (%.4e,%.4e) |",R_values[R_ct],zpp_for_evolve_list[R_ct],delNL0[R_ct][box_ct],del_fcoll_Rct[box_ct],
                                                     dfcoll_dz_val*del_fcoll_Rct[box_ct]*astro_params->F_STAR10/pow(1+zpp_for_evolve_list[R_ct], -astro_params->X_RAY_SPEC_INDEX));
-                                LOG_SUPER_DEBUG("xh %.3e | xi %.3e | xl %.3e | sl %.3e | ct %.3e | ij %.3e",dxheat_dt_box[box_ct],
-                                                dxion_source_dt_box[box_ct],dxlya_dt_box[box_ct],dstarlya_dt_box[box_ct],dstarlya_cont_dt_box[box_ct],dstarlya_inj_dt_box[box_ct]);
+                                LOG_SUPER_DEBUG("xh %.3e | xi %.3e | xl %.3e | sl %.3e | ct %.3e | ij %.3e",
+                                                dxheat_dt_box[box_ct]*astro_params->F_STAR10,
+                                                dxion_source_dt_box[box_ct]*astro_params->F_STAR10,
+                                                dxlya_dt_box[box_ct]*astro_params->F_STAR10,
+                                                dstarlya_dt_box[box_ct]*astro_params->F_STAR10,
+                                                dstarlya_cont_dt_box[box_ct]*astro_params->F_STAR10,
+                                                dstarlya_inj_dt_box[box_ct]*astro_params->F_STAR10);
                             }
 
                             if (flag_options->USE_MINI_HALOS){
@@ -2275,10 +2280,7 @@ LOG_SUPER_DEBUG("Initialised heat");
                                 }
                                 if(box_ct==0){
                                     LOG_SUPER_DEBUG("Cell0: delta: %.3e | xheat: %.3e | dxion: %.3e | dxlya: %.3e | dstarlya: %.3e",curr_delNL0*growth_factor_zp,
-                                                    dxheat_dt_box[box_ct]*astro_params->F_STAR10,
-                                                    dxion_source_dt_box[box_ct]*astro_params->F_STAR10,
-                                                    dxlya_dt_box[box_ct]*astro_params->F_STAR10,
-                                                    dstarlya_dt_box[box_ct]*astro_params->F_STAR10);
+                                                    dxheat_dt_box[box_ct], dxion_source_dt_box[box_ct], dxlya_dt_box[box_ct], dstarlya_dt_box[box_ct]);
                                     if(flag_options->USE_LYA_HEATING){
                                         LOG_SUPER_DEBUG("Lya inj %.4e | Lya cont %.4e",dstarlya_inj_dt_box[box_ct],dstarlya_cont_dt_box[box_ct]);
                                     }
