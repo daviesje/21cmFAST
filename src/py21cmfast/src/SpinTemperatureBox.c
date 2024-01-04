@@ -2274,8 +2274,11 @@ LOG_SUPER_DEBUG("Initialised heat");
                                     J_LW_ave_MINI += dstarlyLW_dt_box_MINI[box_ct];
                                 }
                                 if(box_ct==0){
-                                    LOG_SUPER_DEBUG("Cell0: delta: %.3e | xheat: %.3e | dxion: %.3e | dxlya: %.3e | dstarlya: %.3e",curr_delNL0*growth_factor_zp
-                                         ,dxheat_dt_box[box_ct],dxion_source_dt_box[box_ct],dxlya_dt_box[box_ct],dstarlya_dt_box[box_ct]);
+                                    LOG_SUPER_DEBUG("Cell0: delta: %.3e | xheat: %.3e | dxion: %.3e | dxlya: %.3e | dstarlya: %.3e",curr_delNL0*growth_factor_zp,
+                                                    dxheat_dt_box[box_ct]*astro_params->F_STAR10,
+                                                    dxion_source_dt_box[box_ct]*astro_params->F_STAR10,
+                                                    dxlya_dt_box[box_ct]*astro_params->F_STAR10,
+                                                    dstarlya_dt_box[box_ct]*astro_params->F_STAR10);
                                     if(flag_options->USE_LYA_HEATING){
                                         LOG_SUPER_DEBUG("Lya inj %.4e | Lya cont %.4e",dstarlya_inj_dt_box[box_ct],dstarlya_cont_dt_box[box_ct]);
                                     }
