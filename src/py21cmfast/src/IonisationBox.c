@@ -1333,6 +1333,10 @@ LOG_ULTRA_DEBUG("while loop for until RtoM(R)=%f reaches M_MIN=%f", RtoM(R), M_M
                             } else {
                                 xHII_from_xrays = 0.;
                             }
+                            
+                            if(HII_R_INDEX(x,y,z) == 0){
+                                LOG_SUPER_DEBUG("Cell0 R=%.1f | d %.4e | fcoll (%.4e,%.4e) | rec %.4e | X %.4e",R,curr_dens,Splined_Fcoll,f_coll,rec,xHII_from_xrays);
+                            }
 
                             // check if fully ionized!
                             if ( (f_coll * ION_EFF_FACTOR + f_coll_MINI * ION_EFF_FACTOR_MINI> (1. - xHII_from_xrays)*(1.0+rec)) ){ //IONIZED!!
