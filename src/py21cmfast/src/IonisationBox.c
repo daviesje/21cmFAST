@@ -59,7 +59,7 @@ int ComputeIonizedBox(float redshift, float prev_redshift, struct UserParams *us
 
     float curr_vcb;
 
-    double global_xH, ST_over_PS, f_coll, R, stored_R, f_coll_min;
+    double global_xH, ST_over_PS, f_coll, R, stored_R, f_coll_min,f_total;
     double ST_over_PS_MINI, f_coll_MINI, f_coll_min_MINI;
 
     double t_ast,  Gamma_R_prefactor, rec, dNrec, sigmaMmax;
@@ -1250,6 +1250,7 @@ LOG_ULTRA_DEBUG("while loop for until RtoM(R)=%f reaches M_MIN=%f", RtoM(R), M_M
 
             ST_over_PS = box->mean_f_coll/f_coll;
             ST_over_PS_MINI = box->mean_f_coll_MINI/f_coll_MINI;
+            f_total = f_coll;
 
             //////////////////////////////  MAIN LOOP THROUGH THE BOX ///////////////////////////////////
             // now lets scroll through the filtered box
@@ -1335,7 +1336,8 @@ LOG_ULTRA_DEBUG("while loop for until RtoM(R)=%f reaches M_MIN=%f", RtoM(R), M_M
                             }
                             
                             if(HII_R_INDEX(x,y,z) == 0){
-                                LOG_SUPER_DEBUG("Cell0 R=%.1f | d %.4e | fcoll (%.4e,%.4e) | rec %.4e | X %.4e",R,curr_dens,Splined_Fcoll,f_coll,rec,xHII_from_xrays);
+                                LOG_SUPER_DEBUG("Cell0 R=%.1f | d %.4e | fcoll (%.4e,%.4e) | rec %.4e | X %.4e | ST %.4e | exp. %.4e | tot %.4e",
+                                                    R,curr_dens,Splined_Fcoll,f_coll,rec,xHII_from_xrays,ST_over_PS,box->mean_f_coll,f_total);
                             }
 
                             // check if fully ionized!
