@@ -1574,6 +1574,11 @@ LOG_SUPER_DEBUG("Initialised heat");
                         dstarlya_dt_prefactor[R_ct]*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX)) ));
             LOG_SUPER_DEBUG("cont %.2e inj %.2e",dstarlya_cont_dt_prefactor[R_ct]*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX)) ),
                         dstarlya_inj_dt_prefactor[R_ct]*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX)) ));
+                        
+            LOG_SUPER_DEBUG("starmini: %.4e LW %.4e LWmini %.4e",
+                        dstarlya_dt_prefactor[R_ct]*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX)) ));
+            LOG_SUPER_DEBUG("cont mini %.4e inj mini %.4e",dstarlya_cont_dt_prefactor_MINI[R_ct]*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX)) ),
+                        dstarlya_inj_dt_prefactor_MINI[R_ct]*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX)) ));
         }
 
         // Required quantities for calculating the IGM spin temperature
@@ -2009,17 +2014,6 @@ LOG_SUPER_DEBUG("Initialised heat");
                                 dstarlya_cont_dt_box[box_ct] += (double)del_fcoll_Rct[box_ct]*dstarlya_cont_dt_prefactor[R_ct];
                                 dstarlya_inj_dt_box[box_ct] += (double)del_fcoll_Rct[box_ct]*dstarlya_inj_dt_prefactor[R_ct];
                             }
-                            if(box_ct==0){
-                                LOG_SUPER_DEBUG("Cell0 R=%.1f (%.2f) | d %.4e | SFR (%.4e,%.4e) |",R_values[R_ct],zpp_for_evolve_list[R_ct],delNL0[R_ct][box_ct],del_fcoll_Rct[box_ct],
-                                                    dfcoll_dz_val*del_fcoll_Rct[box_ct]*astro_params->F_STAR10/pow(1+zpp_for_evolve_list[R_ct], -astro_params->X_RAY_SPEC_INDEX));
-                                LOG_SUPER_DEBUG("xh %.3e | xi %.3e | xl %.3e | sl %.3e | ct %.3e | ij %.3e",
-                                                dxheat_dt_box[box_ct]*astro_params->F_STAR10,
-                                                dxion_source_dt_box[box_ct]*astro_params->F_STAR10,
-                                                dxlya_dt_box[box_ct]*astro_params->F_STAR10,
-                                                dstarlya_dt_box[box_ct]*astro_params->F_STAR10,
-                                                dstarlya_cont_dt_box[box_ct]*astro_params->F_STAR10,
-                                                dstarlya_inj_dt_box[box_ct]*astro_params->F_STAR10);
-                            }
 
                             if (flag_options->USE_MINI_HALOS){
                                 dstarlyLW_dt_box[box_ct] += (double)del_fcoll_Rct[box_ct]*dstarlyLW_dt_prefactor[R_ct];
@@ -2067,6 +2061,19 @@ LOG_SUPER_DEBUG("Initialised heat");
                                 dstarlya_dt_box_MINI[box_ct] += (double)del_fcoll_Rct_MINI[box_ct]*dstarlya_dt_prefactor_MINI[R_ct];
                                 dstarlyLW_dt_box_MINI[box_ct] += (double)del_fcoll_Rct_MINI[box_ct]*dstarlyLW_dt_prefactor_MINI[R_ct];
                             }
+                        }
+                        
+                        if(box_ct==0){
+                            LOG_SUPER_DEBUG("Cell0 R=%.1f (%.2f) | SFR (%.4e,%.4e) |",R_values[R_ct],zpp_for_evolve_list[R_ct],
+                                                dfcoll_dz_val*del_fcoll_Rct[box_ct]*astro_params->F_STAR10/pow(1+zpp_for_evolve_list[R_ct], -astro_params->X_RAY_SPEC_INDEX),
+                                                dfcoll_dz_val_MINI*del_fcoll_Rct_MINI[box_ct]*astro_params->F_STAR7_MINI/pow(1+zpp_for_evolve_list[R_ct], -astro_params->X_RAY_SPEC_INDEX));
+                            LOG_SUPER_DEBUG("xh %.3e | xi %.3e | xl %.3e | sl %.3e | ct %.3e | ij %.3e",
+                                            dxheat_dt_box[box_ct]*astro_params->F_STAR10 + dxheat_dt_box_MINI[box_ct]*astro_params->F_STAR7_MINI,
+                                            dxion_source_dt_box[box_ct]*astro_params->F_STAR10 + dxion_source_dt_box_MINI[box_ct]*astro_params->F_STAR7_MINI,
+                                            dxlya_dt_box[box_ct]*astro_params->F_STAR10 + dxlya_dt_box_MINI[box_ct]*astro_params->F_STAR7_MINI,
+                                            dstarlya_dt_box[box_ct]*astro_params->F_STAR10, + dstarlya_dt_box_MINI[box_ct]*astro_params->F_STAR7_MINI,
+                                            dstarlya_cont_dt_box[box_ct]*astro_params->F_STAR10 + dstarlya_cont_dt_box_MINI[box_ct]*astro_params->F_STAR7_MINI,
+                                            dstarlya_inj_dt_box[box_ct]*astro_params->F_STAR10 + dstarlya_inj_dt_box_MINI[box_ct]*astro_params->F_STAR7_MINI);
                         }
 
                         // If R_ct == 0, as this is the final smoothing scale (i.e. it is reversed)
