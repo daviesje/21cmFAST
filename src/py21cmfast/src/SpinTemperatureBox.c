@@ -1576,7 +1576,9 @@ LOG_SUPER_DEBUG("Initialised heat");
                         dstarlya_inj_dt_prefactor[R_ct]*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX)) ));
                         
             LOG_SUPER_DEBUG("starmini: %.4e LW %.4e LWmini %.4e",
-                        dstarlya_dt_prefactor[R_ct]*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX)) ));
+                        dstarlya_dt_prefactor_MINI[R_ct]*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX)) ),
+                        dstarlyLW_dt_prefactor[R_ct]*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX)) ),
+                        dstarlyLW_dt_prefactor_MINI[R_ct]*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX)) ));
             LOG_SUPER_DEBUG("cont mini %.4e inj mini %.4e",dstarlya_cont_dt_prefactor_MINI[R_ct]*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX)) ),
                         dstarlya_inj_dt_prefactor_MINI[R_ct]*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX)) ));
         }
@@ -1956,6 +1958,14 @@ LOG_SUPER_DEBUG("Initialised heat");
 
                 dfcoll_dz_val = (ave_fcoll_inv/pow(10.,10.))*ST_over_PS[R_ct]*SFR_timescale_factor[R_ct]/astro_params->t_STAR;
 
+                LOG_SUPER_DEBUG("z  %.2e ave sfrd val %.3e avg global %.3e (mini %.3e %.3e)",zpp_for_evolve_list[R_ct],ave_fcoll,
+                            Nion_General(zpp_for_evolve_list[R_ct], global_params.M_MIN_INTEGRAL, Mcrit_atom_interp_table[R_ct],
+                                                             astro_params->ALPHA_STAR, 0., astro_params->F_STAR10, 1.,Mlim_Fstar,0.),
+                                                             ave_fcoll_MINI,
+                            Nion_General_MINI(zpp_for_evolve_list[R_ct], global_params.M_MIN_INTEGRAL, pow(10.,log10_Mcrit_LW_ave_list[R_ct]),
+                                                                Mcrit_atom_interp_table[R_ct], astro_params->ALPHA_STAR_MINI, 0.,
+                                                                astro_params->F_STAR7_MINI, 1.,Mlim_Fstar_MINI,0.));
+
                 dstarlya_dt_prefactor[R_ct] *= dfcoll_dz_val;
 
                 //Calculate Lya flux for Lya heating
@@ -2071,7 +2081,7 @@ LOG_SUPER_DEBUG("Initialised heat");
                                             dxheat_dt_box[box_ct]*astro_params->F_STAR10 + dxheat_dt_box_MINI[box_ct]*astro_params->F_STAR7_MINI,
                                             dxion_source_dt_box[box_ct]*astro_params->F_STAR10 + dxion_source_dt_box_MINI[box_ct]*astro_params->F_STAR7_MINI,
                                             dxlya_dt_box[box_ct]*astro_params->F_STAR10 + dxlya_dt_box_MINI[box_ct]*astro_params->F_STAR7_MINI,
-                                            dstarlya_dt_box[box_ct]*astro_params->F_STAR10, + dstarlya_dt_box_MINI[box_ct]*astro_params->F_STAR7_MINI,
+                                            dstarlya_dt_box[box_ct]*astro_params->F_STAR10 + dstarlya_dt_box_MINI[box_ct]*astro_params->F_STAR7_MINI,
                                             dstarlya_cont_dt_box[box_ct]*astro_params->F_STAR10 + dstarlya_cont_dt_box_MINI[box_ct]*astro_params->F_STAR7_MINI,
                                             dstarlya_inj_dt_box[box_ct]*astro_params->F_STAR10 + dstarlya_inj_dt_box_MINI[box_ct]*astro_params->F_STAR7_MINI);
                         }
