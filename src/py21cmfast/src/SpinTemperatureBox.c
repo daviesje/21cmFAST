@@ -1574,13 +1574,14 @@ LOG_SUPER_DEBUG("Initialised heat");
                         dstarlya_dt_prefactor[R_ct]*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX)) ));
             LOG_SUPER_DEBUG("cont %.2e inj %.2e",dstarlya_cont_dt_prefactor[R_ct]*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX)) ),
                         dstarlya_inj_dt_prefactor[R_ct]*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX)) ));
-                        
-            LOG_SUPER_DEBUG("starmini: %.4e LW %.4e LWmini %.4e",
-                        dstarlya_dt_prefactor_MINI[R_ct]*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX)) ),
-                        dstarlyLW_dt_prefactor[R_ct]*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX)) ),
-                        dstarlyLW_dt_prefactor_MINI[R_ct]*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX)) ));
-            LOG_SUPER_DEBUG("cont mini %.4e inj mini %.4e",dstarlya_cont_dt_prefactor_MINI[R_ct]*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX)) ),
-                        dstarlya_inj_dt_prefactor_MINI[R_ct]*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX)) ));
+            if(flag_options->USE_MINI_HALOS){
+                LOG_SUPER_DEBUG("starmini: %.4e LW %.4e LWmini %.4e",
+                            dstarlya_dt_prefactor_MINI[R_ct]*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX)) ),
+                            dstarlyLW_dt_prefactor[R_ct]*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX)) ),
+                            dstarlyLW_dt_prefactor_MINI[R_ct]*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX)) ));
+                LOG_SUPER_DEBUG("cont mini %.4e inj mini %.4e",dstarlya_cont_dt_prefactor_MINI[R_ct]*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX)) ),
+                            dstarlya_inj_dt_prefactor_MINI[R_ct]*( pow(1+zpp_for_evolve_list[R_ct], -(astro_params->X_RAY_SPEC_INDEX)) ));
+            }
         }
 
         // Required quantities for calculating the IGM spin temperature
@@ -1958,13 +1959,15 @@ LOG_SUPER_DEBUG("Initialised heat");
 
                 dfcoll_dz_val = (ave_fcoll_inv/pow(10.,10.))*ST_over_PS[R_ct]*SFR_timescale_factor[R_ct]/astro_params->t_STAR;
 
-                LOG_SUPER_DEBUG("z  %.2e ave sfrd val %.3e avg global %.3e (mini %.3e %.3e)",zpp_for_evolve_list[R_ct],ave_fcoll,
-                            Nion_General(zpp_for_evolve_list[R_ct], global_params.M_MIN_INTEGRAL, Mcrit_atom_interp_table[R_ct],
-                                                             astro_params->ALPHA_STAR, 0., astro_params->F_STAR10, 1.,Mlim_Fstar,0.),
-                                                             ave_fcoll_MINI,
-                            Nion_General_MINI(zpp_for_evolve_list[R_ct], global_params.M_MIN_INTEGRAL, pow(10.,log10_Mcrit_LW_ave_list[R_ct]),
+                LOG_SUPER_DEBUG("z  %.2e ave sfrd val %.3e avg global %.3e",zpp_for_evolve_list[R_ct],ave_fcoll,
+                            Nion_General(zpp_for_evolve_list[R_ct], M_MIN, astro_params->M_TURN,
+                                                             astro_params->ALPHA_STAR, 0., astro_params->F_STAR10, 1.,Mlim_Fstar,0.));
+                if(flag_options->USE_MINI_HALOS){
+                    LOG_SUPER_DEBUG("mini %.3e %.3e",ave_fcoll_MINI,
+                                    Nion_General_MINI(zpp_for_evolve_list[R_ct], M_MIN, pow(10.,log10_Mcrit_LW_ave_list[R_ct]),
                                                                 Mcrit_atom_interp_table[R_ct], astro_params->ALPHA_STAR_MINI, 0.,
                                                                 astro_params->F_STAR7_MINI, 1.,Mlim_Fstar_MINI,0.));
+                }
 
                 dstarlya_dt_prefactor[R_ct] *= dfcoll_dz_val;
 
@@ -2072,18 +2075,28 @@ LOG_SUPER_DEBUG("Initialised heat");
                                 dstarlyLW_dt_box_MINI[box_ct] += (double)del_fcoll_Rct_MINI[box_ct]*dstarlyLW_dt_prefactor_MINI[R_ct];
                             }
                         }
-                        
+
                         if(box_ct==0){
-                            LOG_SUPER_DEBUG("Cell0 R=%.1f (%.2f) | SFR (%.4e,%.4e) |",R_values[R_ct],zpp_for_evolve_list[R_ct],
-                                                dfcoll_dz_val*del_fcoll_Rct[box_ct]*astro_params->F_STAR10/pow(1+zpp_for_evolve_list[R_ct], -astro_params->X_RAY_SPEC_INDEX),
-                                                dfcoll_dz_val_MINI*del_fcoll_Rct_MINI[box_ct]*astro_params->F_STAR7_MINI/pow(1+zpp_for_evolve_list[R_ct], -astro_params->X_RAY_SPEC_INDEX));
+                            LOG_SUPER_DEBUG("Cell0 R=%.1f (%.2f) | SFR %.4e |",R_values[R_ct],zpp_for_evolve_list[R_ct],
+                                                dfcoll_dz_val*del_fcoll_Rct[box_ct]*astro_params->F_STAR10/pow(1+zpp_for_evolve_list[R_ct], -astro_params->X_RAY_SPEC_INDEX)
+                                                );
                             LOG_SUPER_DEBUG("xh %.3e | xi %.3e | xl %.3e | sl %.3e | ct %.3e | ij %.3e",
-                                            dxheat_dt_box[box_ct]*astro_params->F_STAR10 + dxheat_dt_box_MINI[box_ct]*astro_params->F_STAR7_MINI,
-                                            dxion_source_dt_box[box_ct]*astro_params->F_STAR10 + dxion_source_dt_box_MINI[box_ct]*astro_params->F_STAR7_MINI,
-                                            dxlya_dt_box[box_ct]*astro_params->F_STAR10 + dxlya_dt_box_MINI[box_ct]*astro_params->F_STAR7_MINI,
-                                            dstarlya_dt_box[box_ct]*astro_params->F_STAR10 + dstarlya_dt_box_MINI[box_ct]*astro_params->F_STAR7_MINI,
-                                            dstarlya_cont_dt_box[box_ct]*astro_params->F_STAR10 + dstarlya_cont_dt_box_MINI[box_ct]*astro_params->F_STAR7_MINI,
-                                            dstarlya_inj_dt_box[box_ct]*astro_params->F_STAR10 + dstarlya_inj_dt_box_MINI[box_ct]*astro_params->F_STAR7_MINI);
+                                            dxheat_dt_box[box_ct]*astro_params->F_STAR10,
+                                            dxion_source_dt_box[box_ct]*astro_params->F_STAR10,
+                                            dxlya_dt_box[box_ct]*astro_params->F_STAR10,
+                                            dstarlya_dt_box[box_ct]*astro_params->F_STAR10,
+                                            dstarlya_cont_dt_box[box_ct]*astro_params->F_STAR10,
+                                            dstarlya_inj_dt_box[box_ct]*astro_params->F_STAR10);
+                            if(flag_options->USE_MINI_HALOS){
+                                LOG_SUPER_DEBUG("MINI SFR %.4e xh %.3e | xi %.3e | xl %.3e | sl %.3e | ct %.3e | ij %.3e",
+                                            dfcoll_dz_val_MINI*del_fcoll_Rct_MINI[box_ct]*astro_params->F_STAR7_MINI/pow(1+zpp_for_evolve_list[R_ct], -astro_params->X_RAY_SPEC_INDEX),
+                                            dxheat_dt_box_MINI[box_ct]*astro_params->F_STAR7_MINI,
+                                            dxion_source_dt_box_MINI[box_ct]*astro_params->F_STAR7_MINI,
+                                            dxlya_dt_box_MINI[box_ct]*astro_params->F_STAR7_MINI,
+                                            dstarlya_dt_box_MINI[box_ct]*astro_params->F_STAR7_MINI,
+                                            dstarlya_cont_dt_box_MINI[box_ct]*astro_params->F_STAR7_MINI,
+                                            dstarlya_inj_dt_box_MINI[box_ct]*astro_params->F_STAR7_MINI);
+                            }
                         }
 
                         // If R_ct == 0, as this is the final smoothing scale (i.e. it is reversed)
@@ -2276,7 +2289,7 @@ LOG_SUPER_DEBUG("Initialised heat");
                                 //Take the absolute value, the optical depth can deal with very large numbers, so ok to be small
                                 TS_fast = fabs(TS_fast);
                             }
-                            
+
                             if(box_ct==0)
                                 LOG_SUPER_DEBUG("Spin terms xc %.5e xa %.5e xC %.5e Ti %.5e T2 %.5e --> T %.4e",xc_fast,xa_tilde_fast_arg,xCMB,T_inv,T_inv_sq,TS_fast);
 
