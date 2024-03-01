@@ -1506,6 +1506,14 @@ LOG_SUPER_DEBUG("Initialised heat");
 
             for (R_ct=0; R_ct<global_params.NUM_FILTER_STEPS_FOR_Ts; R_ct++){
                 ST_over_PS[R_ct] = ST_over_PS[R_ct]/(fcoll_R_array[R_ct]/(double)HII_TOT_NUM_PIXELS);
+
+                if(R_ct > 0){
+                    LOG_SUPER_DEBUG("z %6.2f ave sfrd (mini) val %.3e global %.3e ratio %.4e z_edge %.4e",zpp_for_evolve_list[R_ct],
+                                fcoll_R_array[R_ct]/(double)HII_TOT_NUM_PIXELS,
+                                ST_over_PS[R_ct]*fcoll_R_array[R_ct]/(double)HII_TOT_NUM_PIXELS/(zpp_edge[R_ct-1]-zpp_edge[R_ct])/pow(1+zpp, -astro_params->X_RAY_SPEC_INDEX),
+                                ST_over_PS[R_ct]/(zpp_edge[R_ct-1]-zpp_edge[R_ct])/pow(1+zpp, -astro_params->X_RAY_SPEC_INDEX),
+                                (zpp_edge[R_ct-1]-zpp_edge[R_ct]));
+                }
             }
         }
 
