@@ -2405,10 +2405,11 @@ LOG_SUPER_DEBUG("Initialised heat");
                             }
 
                             if(box_ct==0){
-                                LOG_SUPER_DEBUG("Cell0 R=%.1f (%.2f) | SFR %.4e | Integral %.4e",R_values[R_ct],zpp_for_evolve_list[R_ct],
+                                LOG_SUPER_DEBUG("Cell0 R=%.1f (%.2f) | SFR %.4e | Integral %.4e | fix term %.4e | delta0 %.4e",R_values[R_ct],zpp_for_evolve_list[R_ct],
                                                     dfcoll_dz_val*astro_params->F_STAR10/pow(1+zpp_for_evolve_list[R_ct], -astro_params->X_RAY_SPEC_INDEX),
                                                     ST_over_PS[R_ct]*dfcoll_dz(zpp_for_evolve_list[R_ct], sigma_Tmin[R_ct], delNL0_rev[box_ct][R_ct], sigma_atR[R_ct])
-                                                    *astro_params->F_STAR10/pow(1+zpp_for_evolve_list[R_ct], -astro_params->X_RAY_SPEC_INDEX));
+                                                    *astro_params->F_STAR10/pow(1+zpp_for_evolve_list[R_ct], -astro_params->X_RAY_SPEC_INDEX),
+                                                    ST_over_PS[R_ct]/pow(1+zpp_for_evolve_list[R_ct], -astro_params->X_RAY_SPEC_INDEX),delNL0_rev[box_ct][R_ct]);
                                 LOG_SUPER_DEBUG("xh %.3e | xi %.3e | xl %.3e | sl %.3e | ct %.3e | ij %.3e",
                                                 dxheat_dt*astro_params->F_STAR10,
                                                 dxion_source_dt*astro_params->F_STAR10,
@@ -2547,6 +2548,15 @@ LOG_SUPER_DEBUG("Initialised heat");
                     }
 
                     this_spin_temp->Ts_box[box_ct] = TS_fast;
+
+                    if(box_ct==0){
+                        LOG_SUPER_DEBUG("Cell0: delta: %.3e | xheat: %.3e | dxion: %.3e | dxlya: %.3e | dstarlya: %.3e",curr_delNL0*growth_factor_zp,
+                                        dxheat_dt, dxion_source_dt, dxlya_dt, dstarlya_dt);
+                        if(flag_options->USE_LYA_HEATING){
+                            LOG_SUPER_DEBUG("Lya inj %.4e | Lya cont %.4e",dstarlya_inj_dt,dstarlya_cont_dt);
+                        }
+                        LOG_SUPER_DEBUG("Ts %.5e Tk %.5e x_e %.5e",TS_fast,T,x_e);
+                    }
 
                     if(LOG_LEVEL >= DEBUG_LEVEL){
                         J_alpha_ave += J_alpha_tot;
