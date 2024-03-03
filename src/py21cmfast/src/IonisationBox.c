@@ -1334,10 +1334,29 @@ LOG_ULTRA_DEBUG("while loop for until RtoM(R)=%f reaches M_MIN=%f", RtoM(R), M_M
                             } else {
                                 xHII_from_xrays = 0.;
                             }
-                            
-                            if(HII_R_INDEX(x,y,z) == 0){
-                                LOG_SUPER_DEBUG("Cell0 R=%.1f | d %.4e | fcoll (%.4e,%.4e) Mini (%.4e %.4e) | rec %.4e | X %.4e",
-                                                R,curr_dens,Splined_Fcoll,f_coll,Splined_Fcoll_MINI,f_coll_MINI,rec,xHII_from_xrays);
+
+                            if(x+y+z == 0 && !flag_options->USE_HALO_FIELD){
+                                //reusing variables (i know its not log10)
+                                if(flag_options->USE_MINI_HALOS){
+                                    log10_Mturnover = pow(10,*((float *)log10_Mturnover_filtered + HII_R_FFT_INDEX(x,y,z)));
+                                    log10_Mturnover_MINI = pow(10,*((float *)log10_Mturnover_MINI_filtered + HII_R_FFT_INDEX(x,y,z)));
+                                }
+                                else{
+                                    log10_Mturnover = astro_params->M_TURN;
+                                }
+                                LOG_SUPER_DEBUG("Cell 0: R=%.1f | d %.4e | fcoll (s %.4e f %.4e i %.4e) | rec %.4e | X %.4e",
+                                                    R,curr_dens,Splined_Fcoll,f_coll,\
+                                                    Nion_ConditionalM(growth_factor,log(M_MIN),log(massofscaleR),sigmaMmax,curr_dens,Deltac,
+                                                        log10_Mturnover,
+                                                        astro_params->ALPHA_STAR,astro_params->ALPHA_ESC,astro_params->F_STAR10,
+                                                        astro_params->F_ESC10,Mlim_Fstar,Mlim_Fesc,user_params->FAST_FCOLL_TABLES),rec,xHII_from_xrays);
+                                if(flag_options->USE_MINI_HALOS){
+                                    LOG_SUPER_DEBUG("Mini (s %.4e f %.4e i %.4e)",Splined_Fcoll_MINI,f_coll_MINI,\
+                                                    Nion_ConditionalM_MINI(growth_factor,log(M_MIN),log(massofscaleR),sigmaMmax,curr_dens,Deltac,
+                                                        log10_Mturnover_MINI,Mcrit_atom,
+                                                        astro_params->ALPHA_STAR_MINI,astro_params->ALPHA_ESC,astro_params->F_STAR7_MINI,
+                                                        astro_params->F_ESC7_MINI,Mlim_Fstar,Mlim_Fesc,user_params->FAST_FCOLL_TABLES));
+                                }
                             }
 
                             // check if fully ionized!
