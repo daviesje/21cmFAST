@@ -1345,14 +1345,14 @@ LOG_ULTRA_DEBUG("while loop for until RtoM(R)=%f reaches M_MIN=%f", RtoM(R), M_M
                                     log10_Mturnover = astro_params->M_TURN;
                                 }
                                 LOG_SUPER_DEBUG("Cell 0: R=%.1f | d %.4e | fcoll (s %.4e f %.4e i %.4e) | rec %.4e | X %.4e",
-                                                    R,curr_dens,Splined_Fcoll,f_coll,\
-                                                    Nion_ConditionalM(growth_factor,log(M_MIN),log(massofscaleR),sigmaMmax,curr_dens,Deltac,
-                                                        log10_Mturnover,
-                                                        astro_params->ALPHA_STAR,astro_params->ALPHA_ESC,astro_params->F_STAR10,
-                                                        astro_params->F_ESC10,Mlim_Fstar,Mlim_Fesc,user_params->FAST_FCOLL_TABLES),rec,xHII_from_xrays);
+                                                    R,curr_dens,Splined_Fcoll,f_coll,
+                                                    Nion_ConditionalM(growth_factor,log(M_MIN),log(massofscaleR),sigmaMmax,Deltac,curr_dens,
+                                                        log10_Mturnover,astro_params->ALPHA_STAR,astro_params->ALPHA_ESC,astro_params->F_STAR10,
+                                                        astro_params->F_ESC10,Mlim_Fstar,Mlim_Fesc,user_params->FAST_FCOLL_TABLES),
+                                                        rec,xHII_from_xrays);
                                 if(flag_options->USE_MINI_HALOS){
                                     LOG_SUPER_DEBUG("Mini (s %.4e f %.4e i %.4e)",Splined_Fcoll_MINI,f_coll_MINI,\
-                                                    Nion_ConditionalM_MINI(growth_factor,log(M_MIN),log(massofscaleR),sigmaMmax,curr_dens,Deltac,
+                                                    Nion_ConditionalM_MINI(growth_factor,log(M_MIN),log(massofscaleR),sigmaMmax,Deltac,curr_dens,
                                                         log10_Mturnover_MINI,Mcrit_atom,
                                                         astro_params->ALPHA_STAR_MINI,astro_params->ALPHA_ESC,astro_params->F_STAR7_MINI,
                                                         astro_params->F_ESC7_MINI,Mlim_Fstar,Mlim_Fesc,user_params->FAST_FCOLL_TABLES));
