@@ -1250,6 +1250,9 @@ LOG_ULTRA_DEBUG("while loop for until RtoM(R)=%f reaches M_MIN=%f", RtoM(R), M_M
 
             ST_over_PS = box->mean_f_coll/f_coll;
             ST_over_PS_MINI = box->mean_f_coll_MINI/f_coll_MINI;
+
+            LOG_SUPER_DEBUG("global mean fcoll %.4e box mean fcoll %.4e ratio %.4e",box->mean_f_coll,f_coll,ST_over_PS);
+            LOG_SUPER_DEBUG("MINI: global mean fcoll %.4e box mean fcoll %.4e ratio %.4e",box->mean_f_coll_MINI,f_coll_MINI,ST_over_PS_MINI);
             f_total = f_coll;
 
             //////////////////////////////  MAIN LOOP THROUGH THE BOX ///////////////////////////////////
